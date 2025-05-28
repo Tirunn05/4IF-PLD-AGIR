@@ -1,6 +1,6 @@
 // BackCard.tsx
 import React from 'react';
-import styles from './BackCard.module.css';
+import styles from './backCard.module.css';
 import logo from '@app/assets/images/1_tonne_de_bonnes_pratiques.avif';
 
 interface BackCardProps {

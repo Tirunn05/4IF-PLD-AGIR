@@ -1,5 +1,5 @@
 import { PlayerStateInterface } from "@shared/common/Game";
-import styles from './PlayerTable.module.css';
+import styles from './playerTable.module.css';
 import { CardDeck, DiscardArea, PlayerHand } from "../../card";
 import { Card } from "@shared/common/Cards";
 import { useTranslation } from 'react-i18next';

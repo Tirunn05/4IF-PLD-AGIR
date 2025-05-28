@@ -1,0 +1,7 @@
+node_modules
+workspaces/api/node_modules
+workspaces/front/node_modules
+workspaces/shared/node_modules
+.git
+Dockerfile
+docker-compose.yml

@@ -3,7 +3,7 @@ import { Modal, Group, Text, Badge, Divider, Button, Stack, Grid } from '@mantin
 import { Card, Practice_Card, Formation_Card, Expert_Card, CardType, Best_Practice_Card } from '@shared/common/Cards';
 import { useTranslation } from 'react-i18next';
 import GameCard from '../gameCard/GameCard';
-import styles from './ModalCard.module.css';
+import styles from './modalCard.module.css';
 
 interface ModalCardProps {
   card: Card | null;

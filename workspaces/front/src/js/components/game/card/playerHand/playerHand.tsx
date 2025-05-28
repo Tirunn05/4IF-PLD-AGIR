@@ -1,6 +1,6 @@
 import React, { } from 'react';
 import { Actor, Card } from '@shared/common/Cards';
-import styles from './PlayerHand.module.css';
+import styles from './playerHand.module.css';
 import { DraggableCard, ModalCard } from '@app/components/card';
 import DevelopperIcon from "@app/assets/icons/svg/icon_developer.svg";
 import ProductOwnerIcon from "@app/assets/icons/svg/icon_product_owner.svg";

@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { FaLeaf, FaSkull } from 'react-icons/fa';
 import { IoEarth } from 'react-icons/io5';
-import styles from './OpponentStatus.module.css';
+import styles from './opponentStatus.module.css';
 import { BackCard, FlipCard } from '@app/components/card';
 import { Actor, Card } from '@shared/common/Cards';
 import ExpertsActivated from '../../atom/expertsActivated/expertsActivated';

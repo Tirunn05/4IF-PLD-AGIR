@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { FaTrashAlt } from 'react-icons/fa';
-import styles from './DiscardArea.module.css';
+import styles from './discardArea.module.css';
 import { Card } from '@shared/common/Cards'; 
 import { useDrop } from 'react-dnd';
 import { ItemTypes } from '@app/js/types/DnD';

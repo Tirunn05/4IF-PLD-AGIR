@@ -1,0 +1,49 @@
+version: '3.9'
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: workspaces/api/Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD: 4damantium!
+      DATABASE_HOST: db        # <-- ici, le nom du service db
+      DATABASE_PORT: 5432
+      DATABASE_NAME: BPGIT-DB  # ajoute si besoin pour préciser la db
+      CORS_ALLOW_ORIGIN: http://localhost:5173
+
+    depends_on:
+      - db
+    networks:
+      - smart-network
+
+  front:
+    build:
+      context: .
+      dockerfile: workspaces/front/Dockerfile
+    ports:
+      - "5173:80"
+    networks:
+      - smart-network
+
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 4damantium!
+      POSTGRES_DB: BPGIT-DB
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - smart-network
+
+networks:
+  smart-network:
+
+volumes:
+  postgres_data:

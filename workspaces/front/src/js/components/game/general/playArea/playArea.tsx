@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { ItemTypes } from "@app/js/types/DnD";
 import { useDrop } from "react-dnd";
-import styles from './PlayArea.module.css';
+import styles from './playArea.module.css';
 import { Card } from '@shared/common/Cards';
 import { useTranslation } from 'react-i18next';
 
