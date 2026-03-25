@@ -24,7 +24,7 @@ FROM nginx:1.25-alpine
 COPY --from=build /app/workspaces/front/dist /usr/share/nginx/html
 
 # Copie un fichier de configuration nginx si besoin (optionnel)
-# COPY nginx.conf /etc/nginx/nginx.conf
+COPY nginx.conf /etc/nginx/nginx.conf
 
 EXPOSE 80
 

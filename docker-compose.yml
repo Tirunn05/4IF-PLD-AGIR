@@ -5,6 +5,7 @@ services:
     build:
       context: .
       dockerfile: workspaces/api/Dockerfile
+    container_name: gameNR_api
     ports:
       - "3000:3000"
     environment:
@@ -13,7 +14,7 @@ services:
       DATABASE_HOST: db       
       DATABASE_PORT: 5432
       DATABASE_NAME: BPGIT-DB 
-      CORS_ALLOW_ORIGIN: http://localhost:5173
+      CORS_ALLOW_ORIGIN: http://localhost:8083
 
     depends_on:
       - db
@@ -24,8 +25,11 @@ services:
     build:
       context: .
       dockerfile: workspaces/front/Dockerfile
+    container_name: gameNR_front
+    environment:
+      - VITE_API_URL=http://gameNR_api:4444
     ports:
-      - "5173:80"
+      - "8083:80"
     networks:
       - smart-network
 
@@ -35,8 +39,9 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 4damantium!
       POSTGRES_DB: BPGIT-DB
+    container_name: gameNR_db
     ports:
-      - "5432:5432"
+      - "3128:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:

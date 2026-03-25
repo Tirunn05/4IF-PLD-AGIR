@@ -27,7 +27,7 @@ const RegisterForm = ({ onSuccessfulRegistration, onShowRegisterForm }) => {
 		}
 
 		try {
-			const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/signup`, {
+			const response = await fetch(`http://localhost:8083/api/auth/signup`, {
 				method: 'POST',
 				headers: {
 					'Accept-Language': i18n.language,
