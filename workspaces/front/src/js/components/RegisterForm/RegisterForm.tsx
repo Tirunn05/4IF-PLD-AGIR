@@ -59,7 +59,7 @@ const RegisterForm = ({ onSuccessfulRegistration, onShowRegisterForm }) => {
 	return (
 		<div className={styles.registerFormContainer}>
 			<form onSubmit={handleSubmit} className={styles.registerForm}>
-				<h2>{t("register.title")}</h2>
+				<h2>TEST REBUILD 2</h2>
 
 				<input
 					type="text" placeholder={t("register.lastname-placeholder")} required
