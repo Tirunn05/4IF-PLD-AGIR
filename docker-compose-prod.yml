@@ -12,7 +12,7 @@ services:
       DATABASE_USER: postgres
       DATABASE_PASSWORD: 4damantium!
       DATABASE_HOST: db       
-      DATABASE_PORT: 5432
+      DATABASE_PORT: 3128
       DATABASE_NAME: BPGIT-DB 
 
     networks:

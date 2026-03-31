@@ -1,0 +1,22 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 4damantium!
+      POSTGRES_DB: BPGIT-DB
+    container_name: gameNR_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - smart-network
+
+networks:
+  smart-network:
+
+volumes:
+  postgres_data:
