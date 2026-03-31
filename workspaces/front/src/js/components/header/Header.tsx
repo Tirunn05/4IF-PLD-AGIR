@@ -11,6 +11,8 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { api } from '../../../api';
 
+const basePath = import.meta.env.VITE_APP_PREFIX || '/';
+
 function Header() {
     const { i18n } = useTranslation();
     const navigate = useNavigate();
@@ -53,7 +55,7 @@ function Header() {
             
             <img src={logout} alt="Déconnexion" onClick={handleLogout} className={styles.logoutButton} />
            
-            <a href='/' className={styles.logo}>
+            <a href={basePath} className={styles.logo}>
                 <img src={tonne_de_bonnes_pratiques}  alt='1 tonne de bonnes pratiques'/>
             </a>
             
