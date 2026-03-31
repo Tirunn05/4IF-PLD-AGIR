@@ -27,7 +27,7 @@ const RegisterForm = ({ onSuccessfulRegistration, onShowRegisterForm }) => {
 		}
 
 		try {
-			const response = await fetch(`http://localhost:8083/api/auth/signup`, {
+			const response = await fetch('api/auth/signup', {
 				method: 'POST',
 				headers: {
 					'Accept-Language': i18n.language,
@@ -59,7 +59,7 @@ const RegisterForm = ({ onSuccessfulRegistration, onShowRegisterForm }) => {
 	return (
 		<div className={styles.registerFormContainer}>
 			<form onSubmit={handleSubmit} className={styles.registerForm}>
-				<h2>TEST REBUILD 2</h2>
+				<h2>TEST REBUILD 3</h2>
 
 				<input
 					type="text" placeholder={t("register.lastname-placeholder")} required

@@ -14,10 +14,7 @@ services:
       DATABASE_HOST: db       
       DATABASE_PORT: 5432
       DATABASE_NAME: BPGIT-DB 
-      CORS_ALLOW_ORIGIN: http://localhost:8083
 
-    depends_on:
-      - db
     networks:
       - smart-network
 
@@ -27,28 +24,11 @@ services:
       dockerfile: workspaces/front/Dockerfile
     container_name: gameNR_front
     environment:
-      - VITE_API_URL=http://gameNR_api:4444
+      - VITE_API_URL=http://url_cgi:3000/gameNR
     ports:
       - "8083:80"
     networks:
       - smart-network
 
-  db:
-    image: postgres:16-alpine
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 4damantium!
-      POSTGRES_DB: BPGIT-DB
-    container_name: gameNR_db
-    ports:
-      - "3128:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    networks:
-      - smart-network
-
 networks:
   smart-network:
-
-volumes:
-  postgres_data:
