@@ -8,8 +8,10 @@ import editIcon from "@app/assets/icons/edit.png";
 import { useNavigate } from "react-router-dom";
 import { ViewModeQuiz } from "@app/components/question";
 import { FiPlus, FiUpload } from "react-icons/fi";
+import { api } from '../../../api';
 import { loadQuestionCsv } from "@app/js/pages/createQuestion/questionApi.ts";
 import AlertPopup, { PopupType } from "@app/components/base/alertPopup/alertPopup.tsx";
+import { api } from '../../../api';
 
 interface ViewQuestionsProps {}
 
@@ -44,17 +46,13 @@ const ViewQuestionsPage : React.FC<ViewQuestionsProps> = () => {
 
   const fetchData = async ()=> {
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/sensibilisation/all-questions`, {
-        method: 'GET',
+      const response = await api.get('/sensibilisation/all-questions', {
         headers: {
           'Content-Type': 'application/json',
           'Accept-Language': i18n.language,
         },
       });
-      if (!response.ok) {
-        throw new Error(t('errors.fetch_questions'));
-      }
-      const allQuestions = await response.json();
+      const allQuestions = response.data;
       setQuestions(allQuestions);
     } catch (error) {
       console.error('Error fetching card info:', error.message);
@@ -76,16 +74,11 @@ const ViewQuestionsPage : React.FC<ViewQuestionsProps> = () => {
 
       const res = await loadQuestionCsv(file);
 
-      if (res.ok) {
-        await fetchData();
+      await fetchData();
 
-        setShowAlert(true);
-        setAlertMessage(t('success.upload-file'));
-        setAlertType(PopupType.SUCCESS);
-      } else {
-        const error = await res.json();
-        throw new Error(error.message);
-      }
+      setShowAlert(true);
+      setAlertMessage(t('success.upload-file'));
+      setAlertType(PopupType.SUCCESS);
     } catch (error) {
       console.error(error);
       setShowAlert(true);

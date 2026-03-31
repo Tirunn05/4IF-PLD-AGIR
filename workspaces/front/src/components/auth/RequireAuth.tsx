@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { LoadingPage } from '@app/js/pages';
 import AlertPopup, { PopupType } from '../base/alertPopup/alertPopup';
 import { useTranslation } from 'react-i18next';
+import { api } from '../../api';
 
 interface RequireAuthProps {
     children: React.ReactNode;
@@ -37,8 +38,7 @@ const RequireAuth : React.FC<RequireAuthProps> = ({
             }
 
             try {
-                const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/isConnected`, {
-                    method: 'GET',
+                const response = await api.get('/auth/isConnected', {
                     headers: { 
                         'Accept-Language': i18n.language,
                         'Content-Type': 'application/json', 
@@ -46,13 +46,9 @@ const RequireAuth : React.FC<RequireAuthProps> = ({
                     },
                 });
 
-                if (response.ok) {
-                    const result = await response.json();
-                    setIsAuthenticated(result.connected);
-                    setIsAdmin(result.role === 'ADMIN');
-                } else {
-                    setIsAuthenticated(false);
-                }  
+                const result = response.data;
+                setIsAuthenticated(result.connected);
+                setIsAdmin(result.role === 'ADMIN');
             } catch (error) {
                 console.error('Erreur lors de la vérification de la connexion:', error);
                 setIsAuthenticated(false);

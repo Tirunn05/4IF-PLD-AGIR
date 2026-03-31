@@ -3,6 +3,7 @@ import '../../../CSS/App.css';
 import styles from './RegisterForm.module.css';
 import { notifications } from '@mantine/notifications';
 import { useTranslation } from 'react-i18next';
+import { api } from '../../../api';
 
 
 const RegisterForm = ({ onSuccessfulRegistration, onShowRegisterForm }) => {
@@ -27,17 +28,15 @@ const RegisterForm = ({ onSuccessfulRegistration, onShowRegisterForm }) => {
 		}
 
 		try {
-			const response = await fetch(`http://localhost:8083/api/auth/signup`, {
-				method: 'POST',
+			const response = await api.post('/auth/signup', { mail: email, password, lastname, firstname }, {
 				headers: {
 					'Accept-Language': i18n.language,
 					'Content-Type': 'application/json',
 				},
-				body: JSON.stringify({ mail: email, password, lastname, firstname, }),
 			});
 
-			const data = await response.json();
-			if (response.ok && data.success) {
+			const data = response.data;
+			if (data.success) {
 				onSuccessfulRegistration();
 				notifications.show({
 					title: t("noti.signup-success-title"),

@@ -22,6 +22,8 @@ import { useEffect } from 'react';
 import ViewQuestions from "@app/js/pages/viewQuestions/viewQuestions.tsx";
 import CreateQuestion from "@app/js/pages/createQuestion/createQuestion.tsx";
 
+const basePath = import.meta.env.VITE_APP_PREFIX || '/';
+
 function App() {
   useEffect(() => {
     anime.suspendWhenDocumentHidden = false; // TODO: not here, move to animation manager
@@ -36,7 +38,7 @@ function App() {
           zIndex={1000000}
         />
       <SocketManagerProvider>
-        <BrowserRouter>
+        <BrowserRouter basename={basePath}>
           <Routes>
             <Route path="/register" element={<Register />} />
             <Route

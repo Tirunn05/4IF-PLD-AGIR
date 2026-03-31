@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import styles from './viewCards.module.css';
+import { api } from '../../../api';
 
 function ViewCards() {
     const { t, i18n } = useTranslation('viewCards');
@@ -23,17 +24,13 @@ function ViewCards() {
     useEffect(() => {
         async function fetchData() {
             try {
-                const response = await fetch(`${import.meta.env.VITE_API_URL}/card/all-cards`, {
-                    method: 'GET',
+                const response = await api.get('/card/all-cards', {
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept-Language': i18n.language,
                     },
                 });
-                if (!response.ok) {
-                    throw new Error(t('errors.fetch_cards'));
-                }
-                const allCards = await response.json();
+                const allCards = response.data;
                 setCards(allCards);
             } catch (error) {
                 console.error('Error fetching card info:', error.message);

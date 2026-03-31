@@ -8,6 +8,7 @@ import BookletMP from "@app/js/components/BookletMP/BookletMP";
 import { useNavigate } from "react-router-dom";
 import arrowBack from '@app/assets/icons/arrowBack.png';
 import arrowNext from '@app/assets/icons/arrowNext.png';
+import { api } from '../../../api';
 import styles from "./greenIt.module.css";
 import ExportPopup from "@app/js/components/PopUp/PopUp";
 import BackgroundImg from "@app/js/components/BackgroundImage/BackgroundImg";
@@ -33,22 +34,9 @@ const GreenIt: React.FC = () => {
         return;
       }
 
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/users/getBooklet?token=${token}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await api.get(`/users/getBooklet?token=${token}`);
 
-      if (!response.ok) {
-        console.error(`Error: ${response.status} ${response.statusText}`);
-        throw new Error("Failed to fetch booklet");
-      }
-
-      const bookletData = await response.json();
+      const bookletData = response.data;
       setUserId(bookletData.booklet.user_id.toString());
       console.log("bookletData", bookletData);
     };
@@ -73,17 +61,9 @@ const GreenIt: React.FC = () => {
   };
 
   const fetchDataExport = async () => {
-    const dataResponce = await fetch(
-      `${import.meta.env.VITE_API_URL}/booklet/export/fetch/${userId}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    const dataResponce = await api.get(`/booklet/export/fetch/${userId}`);
     console.log("dataResponce type of ", typeof dataResponce);
-    const dataFetch = await dataResponce.json();
+    const dataFetch = dataResponce.data;
     console.log("dataFetch", dataFetch);
     return dataFetch;
   };
@@ -103,24 +83,11 @@ const GreenIt: React.FC = () => {
     console.log("payload", payload);
 
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/booklet/export`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(payload),
-        }
-      );
+      const response = await api.post('/booklet/export', payload, {
+        responseType: 'blob',
+      });
 
-      if (!response.ok) {
-        throw new Error(
-          `[greenIT] Http error while exporting booklet], ${response.status}`
-        );
-      }
-
-      const blob = await response.blob();
+      const blob = response.data;
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;

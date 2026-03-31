@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import styles from './BookletStats.module.css';
 import GameHistoryPopup from "@components/GameHistoryPopup/GameHistoryPopup.tsx";
+import { api } from '../../../api';
 
 const BookletStats: React.FC = () => {
     const { t } = useTranslation('greenIt', {keyPrefix:'booklet-stats'});
@@ -26,30 +27,14 @@ const BookletStats: React.FC = () => {
             try {
                 console.log('token in booklet:', token);
                 //get pour retrouver le nombre de parties jouées par l'utilisateur
-                const responsePlayed = await fetch(`${import.meta.env.VITE_API_URL}/users/nbGames?token=${token}`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                });
-                if (!responsePlayed.ok) {
-                    throw new Error('Failed to fetch number of games played');
-                }
-                const { nb_games } = await responsePlayed.json();
+                const responsePlayed = await api.get(`/users/nbGames?token=${token}`);
+                const { nb_games } = responsePlayed.data;
                 console.log(responsePlayed);
                 setNb_played(nb_games);
 
                 //Get Victory count
-                const responseWin = await fetch(`${import.meta.env.VITE_API_URL}/users/nbVictories?token=${token}`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                });
-                if (!responseWin.ok) {
-                    throw new Error('Failed to fetch number of victories');
-                }
-                const { nb_victories } = await responseWin.json();
+                const responseWin = await api.get(`/users/nbVictories?token=${token}`);
+                const { nb_victories } = responseWin.data;
                 setNb_win(nb_victories);
 
                 // Calcul du pourcentage de victoires
@@ -61,44 +46,18 @@ const BookletStats: React.FC = () => {
                 }
 
                 // get pour retrouver le total de CO2 sauvé par l'utilisateur
-                const responseCO2 = await fetch(`${import.meta.env.VITE_API_URL}/users/totalCO2Saved?token=${token}`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                });
-                if (!responseCO2.ok) {
-                    throw new Error('Failed to fetch total CO2 saved');
-                }
-
-                const { total_co2_saved } = await responseCO2.json();
+                const responseCO2 = await api.get(`/users/totalCO2Saved?token=${token}`);
+                const { total_co2_saved } = responseCO2.data;
                 setTotal_CO2(total_co2_saved);
 
                 // get pour retrouver le nombre de bonnes pratiques archivées par l'utilisateur
-                const nbBonnePratique = await fetch(`${import.meta.env.VITE_API_URL}/users/nbGreenITPractices?token=${token}`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                });
-                if (!nbBonnePratique.ok) {
-                    throw new Error('Failed to fetch number of good practices');
-                }
-
-                const { nb_green_it_practices: nb_BP } = await nbBonnePratique.json();
+                const nbBonnePratique = await api.get(`/users/nbGreenITPractices?token=${token}`);
+                const { nb_green_it_practices: nb_BP } = nbBonnePratique.data;
                 setNb_BP(nb_BP);
 
                 // get pour retrouver le nombre de mauvaises pratiques archivées par l'utilisateur
-                const nbMauvaisePratique = await fetch(`${import.meta.env.VITE_API_URL}/users/nbMauvaisePratice?token=${token}`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                });
-                if (!nbMauvaisePratique.ok) {
-                    throw new Error('Failed to fetch number of bad practices');
-                }
-                const { nb_mauvaise_pratice: nb_MP } = await nbMauvaisePratique.json();
+                const nbMauvaisePratique = await api.get(`/users/nbMauvaisePratice?token=${token}`);
+                const { nb_mauvaise_pratice: nb_MP } = nbMauvaisePratique.data;
                 setNb_MP(nb_MP);
 
             } catch (error) {

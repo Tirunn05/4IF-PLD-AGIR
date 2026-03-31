@@ -129,12 +129,7 @@ const CreateCardPage : React.FC<CreateCardProps> = () => {
             try {
                 const response = await getCardById(cardId);
 
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.message || t('fetch_failed', { defaultValue: 'Failed to fetch card' }));
-                }
-
-                const cardData = await response.json() as MultipleContentsCard;
+                const cardData = response.data as MultipleContentsCard;
                 console.log(cardData);
                     
                 // Populate form fields with card data

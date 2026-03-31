@@ -3,6 +3,7 @@ import styles from './connexionForm.module.css';
 import { useNavigate } from "react-router-dom";
 import { notifications } from "@mantine/notifications";
 import { useTranslation } from 'react-i18next';
+import { api } from '../../../api';
 
 interface ConnexionFormProps {
     onShowRegisterForm: () => void;
@@ -26,27 +27,23 @@ const ConnexionForm: React.FC<ConnexionFormProps> = ({
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/login`, {
-                method: 'POST',
+            const response = await api.post('/auth/login', formData, {
                 headers: {
                     'Accept-Language': i18n.language,
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(formData),
             });
 
-            if (response.ok) {
-                const data = await response.json(); // Récupération de la réponse JSON
-                notifications.show({
-                    title: t("noti.welcome-title"),
-                    message: t("noti.welcome-msg"),
-                    color: 'transparent',
-                    icon: '👋',
-                });
-                localStorage.setItem('token', data.access_token); // Stockage du token dans le Local Storage
-                navigate(data.role == 'ADMIN' ? '/admin' : '/menu');
-                return;
-            } 
+            const data = response.data; // Récupération de la réponse JSON
+            notifications.show({
+                title: t("noti.welcome-title"),
+                message: t("noti.welcome-msg"),
+                color: 'transparent',
+                icon: '👋',
+            });
+            localStorage.setItem('token', data.access_token); // Stockage du token dans le Local Storage
+            navigate(data.role == 'ADMIN' ? '/admin' : '/menu');
+            return; 
 
             const errorData = await response.json();
             setErrorMessage( errorData?.message || t("noti.wrong-login-msg"));

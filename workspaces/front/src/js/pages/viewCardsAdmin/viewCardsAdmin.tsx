@@ -8,6 +8,7 @@ import BackgroundImg from '@app/js/components/BackgroundImage/BackgroundImg';
 import { GameCard } from '@app/components/card';
 import { FiPlus } from 'react-icons/fi';
 import { chargeCsv } from '../cardAdmin/cardApi';
+import { api } from '../../../api';
 
 function ViewCardsAdmin() {
     const { t, i18n } = useTranslation(['viewCards', 'admin']);
@@ -21,17 +22,13 @@ function ViewCardsAdmin() {
     useEffect(() => {
         async function fetchData() {
             try {
-                const response = await fetch(`${import.meta.env.VITE_API_URL}/card/all-cards`, {
-                    method: 'GET',
+                const response = await api.get('/card/all-cards', {
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept-Language': i18n.language,
                     },
                 });
-                if (!response.ok) {
-                    throw new Error(t('errors.fetch_cards'));
-                }
-                const allCards = await response.json();
+                const allCards = response.data;
                 setCards(allCards);
             } catch (error) {
                 console.error('Error fetching card info:', error.message);
@@ -58,11 +55,7 @@ function ViewCardsAdmin() {
             if (file) {
                 try {
                     const response = await chargeCsv(file);
-                    if (!response.ok) {
-                        const errorMessage = await response.text();
-                        throw new Error(errorMessage);
-                    }
-                    const result = await response.json();
+                    const result = response.data;
                     console.log('CSV upload result:', result);
                     alert(t('admin:view-cards.success.upload'));
                     window.location.reload();

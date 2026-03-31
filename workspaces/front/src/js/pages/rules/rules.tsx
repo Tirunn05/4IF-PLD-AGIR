@@ -7,6 +7,7 @@ import styles from './rules.module.css';
 import BackgroundImg from '@app/js/components/BackgroundImage/BackgroundImg';
 import cardCaption from '@app/assets/images/CardCaption.webp';
 import { GameCard } from '@app/components/card';
+import { api } from '../../../api';
 
 
 function Rules() {
@@ -23,16 +24,8 @@ function Rules() {
     useEffect(() => {
         async function fetchData() {
             try {
-                const response = await fetch(`${import.meta.env.VITE_API_URL}/card/all-cards`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                });
-                if (!response.ok) {
-                    throw new Error(t('errors.fetch_cards'));
-                }
-                const allCards = await response.json();
+                const response = await api.get('/card/all-cards');
+                const allCards = response.data;
 
                 // Filtrer pour ne garder qu'une seule carte par type
                 const uniqueCards = {};

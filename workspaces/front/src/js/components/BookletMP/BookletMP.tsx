@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styles from "./BookletMP.module.css";
 import { useTranslation } from "react-i18next";
+import { api } from '../../../api';
 interface BookletMPProps {
   userId: string | null;
 }
@@ -22,35 +23,12 @@ const BookletMP: React.FC<BookletMPProps> = ({ userId }) =>  {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const practicesResponse = await fetch(
-          `${import.meta.env.VITE_API_URL}/booklet/banned-practices?user_id=${userId}`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
-
-        const practicesData = await practicesResponse.json();
+        const practicesResponse = await api.get(`/booklet/banned-practices?user_id=${userId}`);
+        const practicesData = practicesResponse.data;
         const practicesBanned = practicesData.practices;
 
-        const response = await fetch(
-          `${import.meta.env.VITE_API_URL}/booklet/bad-practice-details`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
-
-        if (!response.ok) {
-          console.error(`Error: ${response.status} ${response.statusText}`);
-          throw new Error("Failed to fetch bad practice details");
-        }
-
-        const badPracticeDetails = await response.json();
+        const response = await api.get('/booklet/bad-practice-details');
+        const badPracticeDetails = response.data;
         
         const filteredPractices = badPracticeDetails.filter(practice =>
           practice.language === currentLanguage ||
@@ -119,20 +97,9 @@ const BookletMP: React.FC<BookletMPProps> = ({ userId }) =>  {
     if (!action) return;
     
     try {
-      const url = `${import.meta.env.VITE_API_URL}/booklet/${action}/${item.card_id}`;
       const bookletDto = { user_id: user_id, order: item.order };
       
-      const response = await fetch(url, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(bookletDto),
-      });
-      
-      if (!response.ok) {
-        throw new Error("HTTP error, status = " + response.status);
-      }
+      await api.post(`/booklet/${action}/${item.card_id}`, bookletDto);
       
       item.banned = item.UIBanned;
       setData([...newData]);
@@ -153,24 +120,13 @@ const BookletMP: React.FC<BookletMPProps> = ({ userId }) =>  {
       await syncBannedStateWithServer(index);
       
       if (item.UIBanned) {
-        const url = `${import.meta.env.VITE_API_URL}/booklet/updatePriority/${item.card_id}`;
         const bookletDto = {
           user_id: user_id,
           order: item.order,
           typePractices: "bad",
         };
         
-        const response = await fetch(url, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(bookletDto),
-        });
-
-        if (!response.ok) {
-          throw new Error("HTTP error, status = " + response.status);
-        }
+        await api.post(`/booklet/updatePriority/${item.card_id}`, bookletDto);
         
         console.log("Changement de priorité validé avec succès.");
       }

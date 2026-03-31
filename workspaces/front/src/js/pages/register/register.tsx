@@ -6,6 +6,7 @@ import styles from './register.module.css';
 import { useNavigate } from "react-router-dom";
 import BackgroundImg from "@app/js/components/BackgroundImage/BackgroundImg";
 import { useTranslation } from "react-i18next";
+import { api } from '../../../api';
 
 interface RegisterPageProps { }
 const RegisterPage: React.FC<RegisterPageProps> = () => {
@@ -20,8 +21,7 @@ const RegisterPage: React.FC<RegisterPageProps> = () => {
       if (!token) { return; }
 
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/isConnected`, {
-          method: 'GET',
+        const response = await api.get('/auth/isConnected', {
           headers: { 
             'Accept-Language': i18n.language,
             'Content-Type': 'application/json', 
@@ -29,12 +29,8 @@ const RegisterPage: React.FC<RegisterPageProps> = () => {
           }
         });
 
-        if (response.ok) {
-          const result = await response.json();
-          result.connected && navigate(result.role == 'ADMIN' ? '/admin' : '/menu');
-        } else {
-          localStorage.removeItem('token');
-        }
+        const result = response.data;
+        result.connected && navigate(result.role == 'ADMIN' ? '/admin' : '/menu');
       } catch (error) {
         console.error('Erreur lors de la vérification de la connexion:', error);
         localStorage.removeItem('token');

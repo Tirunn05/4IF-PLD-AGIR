@@ -1,11 +1,11 @@
+import { api } from '../../../api';
+
 export const addQuestion = (question: QuestionProps) => {
-    return fetch(`${import.meta.env.VITE_API_URL}/sensibilisation/add`, {
-        method: 'POST',
-        headers: new Headers({
+    return api.post('/sensibilisation/add', question, {
+        headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${localStorage.getItem('token')}`,
-        }),
-        body: JSON.stringify(question),
+        },
     });
 }
 
@@ -13,30 +13,24 @@ export const loadQuestionCsv = (csv) => {
     const formData = new FormData();
     formData.append('csvFile', csv);
 
-    return fetch(`${import.meta.env.VITE_API_URL}/sensibilisation/csv`, {
-        method: 'POST',
-        body: formData
-    });
+    return api.post('/sensibilisation/csv', formData);
 }
 
 export const updateQuestion = (id: number, question: QuestionProps) => {
-    return fetch(`${import.meta.env.VITE_API_URL}/sensibilisation/update?id=${id}`, {
-        method: 'POST',
-        headers: new Headers({
+    return api.post(`/sensibilisation/update?id=${id}`, question, {
+        headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${localStorage.getItem('token')}`,
-        }),
-        body: JSON.stringify(question),
+        },
     });
 }
 
 export const getQuestionById = (id: number) => {
-    return fetch(`${import.meta.env.VITE_API_URL}/sensibilisation/data?id=${id}`, {
-        method: 'GET',
-        headers: new Headers({
+    return api.get(`/sensibilisation/data?id=${id}`, {
+        headers: {
             'Content-Type': 'application/json',
-        }),
-    })
+        },
+    });
 }
 
 export interface QuestionProps {

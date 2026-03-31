@@ -42,7 +42,7 @@ export default defineConfig({
       }
     } */
   ],
-  
+  base: process.env.VITE_APP_PREFIX || '/',
   resolve: {
     alias: {
       '@components': '/src/js/components',

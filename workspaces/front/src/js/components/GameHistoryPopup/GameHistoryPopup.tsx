@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { PlayerGameHistoryInterface } from "@shared/common/Game.ts";
 import { format } from "date-fns";
 import { useTranslation } from "react-i18next";
+import { api } from '../../../api';
 
 interface GameHistoryPopupProps {
     open: boolean;
@@ -27,17 +28,8 @@ function GameHistoryPopup(props: GameHistoryPopupProps) {
 
         const fetchData = async () => {
             try {
-                const gamesJoinedResponse = await fetch(
-                    `${import.meta.env.VITE_API_URL}/users/gamesJoined?token=${token}`,
-                    {
-                        method: "GET",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                    }
-                );
-
-                const gamesJoinedData = await gamesJoinedResponse.json();
+                const gamesJoinedResponse = await api.get(`/users/gamesJoined?token=${token}`);
+                const gamesJoinedData = gamesJoinedResponse.data;
 
                 console.log(gamesJoinedData.games);
                 setGamesJoined(gamesJoinedData.games);

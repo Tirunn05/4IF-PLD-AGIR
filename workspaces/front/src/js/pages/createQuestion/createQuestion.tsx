@@ -60,11 +60,7 @@ const CreateQuestionPage : React.FC<CreateQuestionProps> = () => {
         async function fetchData() {
             try {
                 const res = await getQuestionById(Number(id))
-                if (!res.ok) {
-                    const error = await res.json();
-                    throw new Error(error.message);
-                }
-                const question: QuestionResponse = await res.json();
+                const question: QuestionResponse = res.data;
                 const languageList = Object.keys(question.contents);
 
                 // console.log(question);
@@ -128,7 +124,7 @@ const CreateQuestionPage : React.FC<CreateQuestionProps> = () => {
                 setAlertMessage(`Question ${isEditMode ? 'updated' : 'created'} successfully!`);
                 setAlertType(PopupType.SUCCESS);
 
-                const updatedQuestion: QuestionResponse = await res.json();
+                const updatedQuestion: QuestionResponse = res.data;
                 const languageList = Object.keys(updatedQuestion.contents);
 
                 setQuestionContents(updatedQuestion);
@@ -138,7 +134,7 @@ const CreateQuestionPage : React.FC<CreateQuestionProps> = () => {
                 const content = updatedQuestion.contents[selectedLanguage];
                 updateContent(selectedLanguage, updatedQuestion.correct_response, content);
             } else {
-                const error = await res.json();
+                const error = await res.data;
                 throw new Error(error.message);
             }
         } catch (error) {

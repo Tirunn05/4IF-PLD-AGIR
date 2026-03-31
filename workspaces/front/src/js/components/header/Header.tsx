@@ -9,6 +9,7 @@ import styles from './Header.module.css';
 import { Language } from '@shared/common/Languages';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import { api } from '../../../api';
 
 function Header() {
     const { i18n } = useTranslation();
@@ -28,8 +29,7 @@ function Header() {
         const confirmLogout = window.confirm('Voulez-vous vous déconnecter ?');
         if (confirmLogout) {
             try {
-                await fetch(`${import.meta.env.VITE_API_URL}/auth/signout`, {
-                    method: 'POST',
+                await api.post('/auth/signout', null, {
                     headers: {
                         'Accept-Language': i18n.language,
                         'Content-Type': 'application/json',
