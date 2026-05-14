@@ -9,7 +9,7 @@ Bienvenue sur la version digitalisée du jeu de cartes **1 Tonne de Bonnes Prati
   - [🎮 Fonctionnement du jeu](#-fonctionnement-du-jeu)
     - [👥 Nombre de participants](#-nombre-de-participants)
     - [🧰 Mise en place](#-mise-en-place)
-    - [🔄 Déroulement d’un tour](#-déroulement-dun-tour)
+    - [🔄 Déroulement d'un tour](#-déroulement-dun-tour)
     - [🃏 Types de cartes](#-types-de-cartes)
       - [✅ Bonnes pratiques](#-bonnes-pratiques)
       - [🚫 Mauvaises pratiques](#-mauvaises-pratiques)
@@ -29,7 +29,15 @@ Bienvenue sur la version digitalisée du jeu de cartes **1 Tonne de Bonnes Prati
     - [6. Lancement de l'application](#6-lancement-de-lapplication)
       - [Serveur (NestJS)](#serveur-nestjs)
       - [Client (React)](#client-react)
-  - [🔐 Accès et interface d’administration](#-accès-et-interface-dadministration)
+  - [⚙️ Installation via docker](#️-installation-via-docker)
+    - [1. Prérequis](#1-prérequis-1)
+    - [2. Clonage du projet](#2-clonage-du-projet-1)
+    - [3. Configuration des variables d'environnement](#3-configuration-des-variables-denvironnement-1)
+      - [Back-end (`workspaces/api/.env`)](#back-end-workspacesapienv-1)
+      - [Front-end (`workspaces/front/.env`)](#front-end-workspacesfrontenv-1)
+    - [4. Construction des images via docker et lancement de l'application](#4-construction-des-images-via-docker-et-lancement-de-lapplication)
+    - [5. Base de données : initialisation](#5-base-de-données--initialisation-1)
+  - [🔐 Accès et interface d'administration](#-accès-et-interface-dadministration)
     - [Connexion administrateur](#connexion-administrateur)
     - [Fonctionnalités disponibles](#fonctionnalités-disponibles)
   - [📬 Support \& contribution](#-support--contribution)
@@ -38,9 +46,9 @@ Bienvenue sur la version digitalisée du jeu de cartes **1 Tonne de Bonnes Prati
 
 ## 🎮 Fonctionnement du jeu
 
-Le jeu est une adaptation numérique du jeu de cartes « 1 Tonne de Bonnes Pratiques Green IT », inspiré de la mécanique du _1000 Bornes_. L’objectif est d’être le premier à atteindre une économie d’au moins **1000 kg de CO₂**, en posant des cartes représentant de **bonnes pratiques Green IT**.
+Le jeu est une adaptation numérique du jeu de cartes « 1 Tonne de Bonnes Pratiques Green IT », inspiré de la mécanique du _1000 Bornes_. L'objectif est d'être le premier à atteindre une économie d'au moins **1000 kg de CO₂**, en posant des cartes représentant de **bonnes pratiques Green IT**.
 
-> 🎯 Si vous manquez de temps, l’objectif peut être abaissé jusqu'à 500 kg.
+> 🎯 Si vous manquez de temps, l'objectif peut être abaissé jusqu'à 500 kg.
 
 ### 👥 Nombre de participants
 
@@ -58,14 +66,14 @@ Le jeu est une adaptation numérique du jeu de cartes « 1 Tonne de Bonnes Prati
 
 ---
 
-### 🔄 Déroulement d’un tour
+### 🔄 Déroulement d'un tour
 
 À son tour, un joueur peut :
 
 - Poser une carte **Bonne pratique** (gain de CO₂)
 - Jouer une **carte Mauvaise pratique** pour bloquer un autre joueur
 - Utiliser une **carte Formation** ou **Expert** pour se débloquer
-- Si aucune carte n’est jouable, une carte est **défaussée** et remplacée
+- Si aucune carte n'est jouable, une carte est **défaussée** et remplacée
 
 ---
 
@@ -85,14 +93,14 @@ Le jeu est une adaptation numérique du jeu de cartes « 1 Tonne de Bonnes Prati
 #### 🎓 Cartes Formation
 
 - Permettent de se débloquer d'une **mauvaise pratique**
-- Doivent être du **même type d’acteur** que la carte qui bloque
+- Doivent être du **même type d'acteur** que la carte qui bloque
 - Peuvent être piochées grâce aux points de sensibilisation
 
 #### 🧠 Cartes Expert
 
 - Fonctionnent comme des **jokers**
 - Peuvent être posées **préventivement** pour se protéger
-- Ou utilisées **en réaction** pour se libérer d’un blocage
+- Ou utilisées **en réaction** pour se libérer d'un blocage
 - Elles immunisent contre les mauvaises pratiques **du même acteur**
 
 ---
@@ -109,19 +117,19 @@ Le jeu est une adaptation numérique du jeu de cartes « 1 Tonne de Bonnes Prati
 
 ### 🔁 Défausse automatique
 
-- Si aucune carte n’est jouable, une carte aléatoire de la main du joueur est défaussée et remplacée par une carte de la pioche
+- Si aucune carte n'est jouable, une carte aléatoire de la main du joueur est défaussée et remplacée par une carte de la pioche
 
 ---
 
 ### 🏁 Fin de la partie
 
-- Le premier joueur à atteindre ou dépasser l’objectif CO₂ (par défaut **1000 kg**) gagne la partie
+- Le premier joueur à atteindre ou dépasser l'objectif CO₂ (par défaut **1000 kg**) gagne la partie
 
 ---
 
 ## ⚙️ Installation locale
 
-> 🧪 Cette application n'est pas encore déployée globalement. Suivez les instructions ci-dessous pour l'exécuter en local.
+> 🧪 Cette application peut aussi être lancée via Docker (voir section suivante). Suivez les instructions ci-dessous pour l'exécuter en local.
 
 ### 1. Prérequis
 
@@ -135,7 +143,7 @@ Le jeu est une adaptation numérique du jeu de cartes « 1 Tonne de Bonnes Prati
 ### 2. Clonage du projet
 
 ```bash
-git clone https://github.com/hexplosif/4IF-PLD-AGIR
+git clone https://github.com/Tirunn05/4IF-PLD-AGIR
 ```
 
 ---
@@ -190,7 +198,7 @@ Puis, chargez les données via deux requêtes **POST** dans Postman :
 
 ---
 
-### 6. Lancement de l'application
+### 6. Lancement de l'application en local
 
 #### Serveur (NestJS)
 
@@ -209,11 +217,97 @@ Application disponible sur :
 
 ---
 
-## 🔐 Accès et interface d’administration
+## ⚙️ Installation via docker
+
+> 🧪 Cette application peut aussi être lancée via Docker (voir section suivante). Suivez les instructions ci-dessous pour l'exécuter en local.
+
+### 1. Prérequis
+
+- [Docker](https://www.docker.com/)
+- [Postman](https://www.postman.com/) ou un outil similaire pour les requêtes HTTP
+
+---
+
+### 2. Clonage du projet
+
+```bash
+git clone https://github.com/Tirunn05/4IF-PLD-AGIR
+```
+
+---
+
+### 3. Configuration des variables d'environnement
+
+#### Back-end (`workspaces/api/.env`)
+
+```env
+DATABASE_USER = <votre_utilisateur_postgres>
+DATABASE_PASSWORD = <votre_mot_de_passe>
+DATABASE_HOST = localhost
+DATABASE_PORT = 5432
+DATABASE_URL = <nom_de_votre_base>
+CORS_ALLOW_ORIGIN = http://localhost:8083
+```
+
+#### Front-end (`workspaces/front/.env`)
+
+```env
+VITE_API_URL = http://localhost:8083
+VITE_APP_PREFIX = /gameNR
+```
+
+---
+
+### 4. Construction des images via docker et lancement de l'application
+
+```bash
+docker compose -f docker-compose-xxx.yml build --no-cache
+
+docker compose -f docker-compose-xxx.yml up -d
+```
+**Attention : À chaque changement il est nécessaire de refaire un build sans cache pour prendre en compte les changements**
+
+*Valeur possible pour xxx*
+- bd-only : Lancement de la base de données seulement
+- dev : Lancement des serveurs back et front (contenant NGINX) et de la BD
+- prod : Lancement des serveurs back et front (contenant NGINX) sans la BD
+
+---
+
+Si NGINX lancée, application disponible sur :  
+👉 [http://localhost:8083](http://localhost:8083)
+
+Sinon 
+👉 [http://localhost:5173](http://localhost:5173)
+
+---
+
+### 5. Base de données : initialisation
+
+Créez une base PostgreSQL vide avec les identifiants renseignés dans le `.env`.
+
+Puis, chargez les données via deux requêtes **POST** dans Postman :
+
+- **Quiz**  
+  `POST http://localhost:8083/gameNR/api/sensibilisation/csv`
+
+  - Body : `form-data`
+  - Key : `csvFile`, fichier : `dataQuizz.csv`
+
+- **Cartes de jeu**  
+  `POST http://localhost:8083/gameNR/api/card/csv`
+  - Body : `form-data`
+  - Key : `csvFile`, fichier : `dataCard.csv`
+
+> 📂 Les fichiers sont situés dans `workspaces/api/src/`
+
+---
+
+## 🔐 Accès et interface d'administration
 
 ### Connexion administrateur
 
-Pour accéder à l’interface d’administration, connectez-vous avec les identifiants pré-définis (stockés en dur dans `workspaces/api/src/authentification/constants.ts`).
+Pour accéder à l'interface d'administration, connectez-vous avec les identifiants pré-définis (stockés en dur dans `workspaces/api/src/authentification/constants.ts`).
 
 ### Fonctionnalités disponibles
 
@@ -229,13 +323,13 @@ Pour accéder à l’interface d’administration, connectez-vous avec les ident
 
 Pour toute suggestion, bug ou amélioration, vous pouvez :
 
-- Créer une issue sur [le repo GitHub](https://github.com/sarahpgl/smartcgi)
+- Créer une issue sur [le repo GitHub](https://github.com/Tirunn05/4IF-PLD-AGIR)
 - Ou contribuer via une Pull Request
 
 ---
 
 ## 📘 Ressources complémentaires
 
-- 🚀 Perspectives d’amélioration du projet : dans le dossier `/docs`
+- 🚀 Perspectives d'amélioration du projet : dans le dossier `/docs`
 - 📄 Documentation développeur : dans le dossier `/docs`
 - 🧠 Référentiel Green IT : [Club Green IT - 2022](https://club.greenit.fr/doc/2022-06-GREENIT-Referentiel_maturite-v3.pdf)
