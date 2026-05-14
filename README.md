@@ -121,7 +121,7 @@ Le jeu est une adaptation numérique du jeu de cartes « 1 Tonne de Bonnes Prati
 
 ## ⚙️ Installation locale
 
-> 🧪 Cette application n'est pas encore déployée globalement. Suivez les instructions ci-dessous pour l'exécuter en local.
+> 🧪 Cette application peut aussi être lancée via Docker (voir section suivante). Suivez les instructions ci-dessous pour l'exécuter en local.
 
 ### 1. Prérequis
 
@@ -135,7 +135,7 @@ Le jeu est une adaptation numérique du jeu de cartes « 1 Tonne de Bonnes Prati
 ### 2. Clonage du projet
 
 ```bash
-git clone https://github.com/hexplosif/4IF-PLD-AGIR
+git clone https://github.com/Tirunn05/4IF-PLD-AGIR
 ```
 
 ---
@@ -164,8 +164,11 @@ CORS_ALLOW_ORIGIN = http://localhost:5173
 #### Front-end (`workspaces/front/.env`)
 
 ```env
-VITE_API_URL = http://localhost:3000
+VITE_API_URL = http://localhost:8083
+VITE_APP_PREFIX=/gameNR
 ```
+
+Cette configuration correspond à la nouvelle architecture de déploiement avec un prefixe d'URL `/gameNR` et un reverse proxy Nginx.
 
 ---
 
@@ -190,7 +193,7 @@ Puis, chargez les données via deux requêtes **POST** dans Postman :
 
 ---
 
-### 6. Lancement de l'application
+### 6. Lancement de l'application en local
 
 #### Serveur (NestJS)
 
@@ -204,8 +207,102 @@ npm run server
 npm run client
 ```
 
-Application disponible sur :  
+Application disponible en mode développement :  
 👉 [http://localhost:5173](http://localhost:5173)
+
+En mode Docker, le front est exposé sur :  
+👉 [http://localhost:8083](http://localhost:8083)
+
+---
+
+## ⚙️ Installation via docker
+
+> 🧪 Cette application peut aussi être lancée via Docker (voir section suivante). Suivez les instructions ci-dessous pour l'exécuter en local.
+
+### 1. Prérequis
+
+- [Docker](https://www.docker.com/)
+- [Postman](https://www.postman.com/) ou un outil similaire pour les requêtes HTTP
+
+---
+
+### 2. Clonage du projet
+
+```bash
+git clone https://github.com/Tirunn05/4IF-PLD-AGIR
+```
+
+---
+
+### 3. Configuration des variables d'environnement
+
+#### Back-end (`workspaces/api/.env`)
+
+```env
+DATABASE_USER = <votre_utilisateur_postgres>
+DATABASE_PASSWORD = <votre_mot_de_passe>
+DATABASE_HOST = localhost
+DATABASE_PORT = 5432
+DATABASE_URL = <nom_de_votre_base>
+CORS_ALLOW_ORIGIN = http://localhost:8083
+```
+
+#### Front-end (`workspaces/front/.env`)
+
+```env
+VITE_API_URL = http://localhost:8083
+VITE_APP_PREFIX=/gameNR
+```
+
+---
+
+### 4. Construction des images via docker et lancement de l'application
+
+Le fichier `docker-compose.yml` inclut désormais :
+- `gameNR_api` : backend NestJS exposé sur `3000:3000`
+- `gameNR_front` : frontend Nginx exposé sur `8083:80`
+- `gameNR_db` : base PostgreSQL exposée sur `3128:5432`
+
+Le front est servi avec un préfixe d'URL `/gameNR` et utilise `nginx.conf` pour proxyfier les appels `/gameNR/api/` vers le backend.
+
+```bash
+docker compose build --no-cache
+docker compose up -d
+```
+
+**Attention : À chaque changement il est nécessaire de refaire un build sans cache pour prendre en compte les changements**
+
+*Valeur possible pour xxx*
+- bd-only : Lancement de la base de données seulement
+- dev : Lancement des serveurs back et front (contenant NGINX) et de la BD
+- prod : Lancement des serveurs back et front (contenant NGINX) sans la BD
+---
+
+Si NGINX lancée, application disponible sur :  
+👉 [http://localhost:8083](http://localhost:8083)
+
+Sinon 
+👉 [http://localhost:5173](http://localhost:5173)
+---
+
+### 5. Base de données : initialisation
+
+Créez une base PostgreSQL vide avec les identifiants renseignés dans le `.env`.
+
+Puis, chargez les données via deux requêtes **POST** dans Postman :
+
+- **Quiz**  
+  `POST http://localhost:8083/api/sensibilisation/csv`
+
+  - Body : `form-data`
+  - Key : `csvFile`, fichier : `dataQuizz.csv`
+
+- **Cartes de jeu**  
+  `POST http://localhost:8083/api/card/csv`
+  - Body : `form-data`
+  - Key : `csvFile`, fichier : `dataCard.csv`
+
+> 📂 Les fichiers sont situés dans `workspaces/api/src/`
 
 ---
 
