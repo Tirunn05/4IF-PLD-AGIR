@@ -166,13 +166,14 @@ DATABASE_PASSWORD = <votre_mot_de_passe>
 DATABASE_HOST = localhost
 DATABASE_PORT = 5432
 DATABASE_URL = <nom_de_votre_base>
-CORS_ALLOW_ORIGIN = http://localhost:5173
+CORS_ALLOW_ORIGIN = http://localhost:8083
 ```
 
 #### Front-end (`workspaces/front/.env`)
 
 ```env
-VITE_API_URL = http://localhost:3000
+VITE_API_URL = http://localhost:8083
+VITE_APP_PREFIX = /gameNR
 ```
 
 ---
