@@ -23,8 +23,6 @@ services:
       context: .
       dockerfile: workspaces/front/Dockerfile
     container_name: gameNR_front
-    environment:
-      - VITE_API_URL=http://url_cgi:3000/gameNR
     ports:
       - "8083:80"
     networks:

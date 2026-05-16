@@ -15,8 +15,6 @@ services:
       DATABASE_PORT: 5432
       DATABASE_NAME: BPGIT-DB 
 
-      CORS_ALLOW_ORIGIN: http://localhost:8083
-
     depends_on:
       - db
     networks:
